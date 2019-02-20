@@ -12,6 +12,8 @@
         <title>Scriptlet de JSP</title>
     </head>
     <body>
+        <%@include file="cabecera.jsp"%>
+        <%= dameTitulo("Scriptlets")%>
         <h1>Scriptlet de JSP</h1>
         <% 
             int numero = 7, factorial = 1;

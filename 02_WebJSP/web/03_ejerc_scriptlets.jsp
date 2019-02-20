@@ -12,6 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%@include file="cabecera.jsp"%>
+        <%= dameTitulo("Ejercicios Scriptlets")%>
         <h1>Tablas de multiplicar</h1> 
         <%!
             //Declaraciones
