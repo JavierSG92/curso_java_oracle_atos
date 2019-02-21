@@ -22,3 +22,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /02_WebJSP/dist/
+/02_ProyectoWebJSP/nbproject/private/
+/02_ProyectoWebJSP/build/
+/04_EjemploMVC/nbproject/private/
+/04_EjemploMVC/build/
