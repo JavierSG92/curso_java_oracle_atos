@@ -3,7 +3,17 @@
     Created on : 21-feb-2019, 10:18:09
     Author     : USUARIO
 --%>
-
+<%@page import="modelo.Persona"%>
+<%@page import="modelo.logica.GestionPersona"%>
+<%  
+    Persona p = GestionPersona.getInstancia().getPersona();
+    String nombre = "";
+    int edad = 0;
+    if (p != null){
+    nombre = GestionPersona.getInstancia().getPersona().getNombre();
+    edad = GestionPersona.getInstancia().getPersona().getEdad();
+    }
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,8 +24,10 @@
     <body>
         <h1>Ejemplo MVC</h1>
         <form action="Procesar" method="GET">
-            Nombre: <input id="nombre" type="text" name="nombre"/><br/>
-            Edad: <input id="edad" type="text" name="edad"/><br/>
+            Nombre: <input id="nombre" type="text" name="nombre"
+                        value = <%= nombre %> /><br/>
+            Edad: <input id="edad" type="text" name="edad" 
+                         value = <%= edad %> /><br/>
             <input type="submit" value="Enviar datos"/>
         </form>
     </body>
