@@ -52,6 +52,23 @@ public class GestionUsuario {
             return TipoResultado.SIN_VALORES;
         }
     }
+    
+    public TipoResultado modificarPersona(String nnombre, String edad, String nemail, String npassword) { 
+        if (validarDatosPersona(nnombre, edad, nemail, npassword)) {
+            for (Usuario user: list){
+                if (user.getEmail().equals(nemail) && user.getPassword().equals(npassword)) { 
+                    Usuario nuevoUsu = new Usuario (nnombre, edad, nemail, npassword);
+                    this.list.add(nuevoUsu);
+                    return TipoResultado.OK;
+                }
+        } 
+                return false;   
+        } else { 
+            return TipoResultado.SIN_VALORES;
+        }
+       }
+       } 
+    }
        
     public boolean validacionPasswd(String email, String password) { 
         for (Usuario user: list){
@@ -61,6 +78,9 @@ public class GestionUsuario {
         } 
         return false;
     } 
-   
     
+    public Usuario getUsuario() { 
+        Usuario user = list.get(list.size());
+        return user;
+    }
 }

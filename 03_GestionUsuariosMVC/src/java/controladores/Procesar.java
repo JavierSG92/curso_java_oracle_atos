@@ -11,13 +11,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.usuario.Usuario;
 import modelo.logica.GestionUsuario;
 
 /**
  *
  * @author USUARIO
  */
-public class ControladorUsuariosServlet extends HttpServlet {
+public class Procesar extends HttpServlet {
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -30,24 +31,16 @@ public class ControladorUsuariosServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String usu = request.getParameter("usu");
+            String usu = request.getParameter("usuario");
             String edad = request.getParameter("edad");
             String email = request.getParameter("email");
-            String con = request.getParameter("con"); 
-            String nusu = request.getParameter("nusu");
-            String nemail = request.getParameter("nemail");
-            String ncon = request.getParameter("ncon");
-            String mod = request.getParameter("modificar");
-            String elim = request.getParameter("eliminar");
-        
-        if (mod != null && mod.equals("modificar")) { 
-            GestionUsuario.getInstancia().modificarPersona(nusu, edad, nemail, ncon);
-        } else {
+            String con = request.getParameter("contraseña"); 
+            
             GestionUsuario.TipoResultado resultado;
             resultado = GestionUsuario.getInstancia().guardarPersona(usu, edad, email, con);
         switch (resultado) { 
             case OK:
-          //  request.getSession().setAttribute("usuario1", GestionUsuario.getInstancia().getUsuario());
+            request.getSession().setAttribute("usuario1", GestionUsuario.getInstancia());
             request.getRequestDispatcher("exito.jsp").forward(request, response);
             break;
             case SIN_VALORES:
@@ -66,18 +59,13 @@ public class ControladorUsuariosServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */ 
+     */
+    
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String email = request.getParameter("email");
-            String con = request.getParameter("con"); 
-            if (GestionUsuario.getInstancia().validacionPasswd(email, con)) {
-                request.getRequestDispatcher("accesook.jsp").forward(request, response);
-            } else { 
-                request.getRequestDispatcher("accesonok.jsp").forward(request, response);
-            } 
+        
     }
 
     /**

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : registro
-    Created on : 21-feb-2019, 16:38:48
+    Document   : login
+    Created on : 25-feb-2019, 12:47:27
     Author     : USUARIO
 --%>
 
@@ -9,19 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Registro de usuario</title>
+        <title>JSP Page</title>
     </head>
-     <body class="container">
-        <h1>Registro de usuario</h1> 
+    <body class="container">
+        <h1>Acceso de Usuario</h1> 
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
-            <form action="procesar.do" method="post" class="form-inline">
-            <p>Usuario:</p>
-            <p><input type="text" id="usu" name="usu" autocomplete="true" size="100" maxlength="100" required="true" 
-                    placeholder="Introduzca el usuario" class="form-control"/></p>
-            <p>Edad:</p>
-            <p><input id="edad" name="edad" size="100" maxlength="100" required="true" placeholder="Introduzca su edad">
-                    </input></p>
+            <form action="procesar.do" method="get" class="form-inline">
             <p>Email:</p>
             <p><input id="email" type="text" name="email" autocomplete="true" size="100" maxlength="100" required="true" 
                        placeholder="Introduzca su email" class="form-control"/></p>  
@@ -32,5 +26,5 @@
         </form>
         </div>  
         <div class="col-lg-2"></div>
-     </body>       
+     </body>  
 </html>
