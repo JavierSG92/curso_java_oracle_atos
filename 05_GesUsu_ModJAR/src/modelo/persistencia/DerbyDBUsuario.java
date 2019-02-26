@@ -39,7 +39,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
         try (Connection con = DriverManager.getConnection(
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
-            String squery  = "INSERT INTO usuario (Nombre, Edad, email, pass) VALUES(" 
+            String squery  = "INSERT INTO usuario (Nombre, Edad, email, password) VALUES(" 
                         + "'" + persona.getNombre() + "', "
                         + persona.getEdad() + ", '" + persona.getEmail() + "', '" + persona.getPassword() + "')";
             Statement stmt = con.createStatement();
@@ -56,7 +56,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
             ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-            String squery = "SELECT id, nombre, edad, email, pass FROM Usuario";
+            String squery = "SELECT id, nombre, edad, email, password FROM Usuario";
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(squery);
             while (res.next()) { 
@@ -64,7 +64,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 String nombre = res.getString("nombre");
                 int edad = res.getInt("edad");
                 String email = res.getString("email");
-                String password = res.getString("pass");
+                String password = res.getString("password");
                 Usuario usu = new Usuario(id, nombre, edad, email, password);
                 listaUsuarios.add(usu);
             }
@@ -80,14 +80,14 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
             Usuario usu = null;
-            String squery = "SELECT nombre, edad, email, pass FROM Usuario WHERE Id=" + id;
+            String squery = "SELECT nombre, edad, email, password FROM Usuario WHERE Id=" + id;
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(squery);
             if (res.next()) { 
                 String nombre = res.getString("nombre");
                 int edad = res.getInt("edad");
                 String email = res.getString("email");
-                String password = res.getString("pass");
+                String password = res.getString("password");
                 usu = new Usuario(id, nombre, edad, email, password);
             }
             return usu;
@@ -96,21 +96,21 @@ public class DerbyDBUsuario implements IUsuarioDAO {
         }
     }
 
-   @Override
+    @Override
     public Usuario obtenerUno(String email) {
         try (Connection con = DriverManager.getConnection(
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
             Usuario usu = null;
-            String squery = "SELECT id, nombre, edad, email, pass FROM Usuarios WHERE email='"+email+"'";
+            String squery = "SELECT id, nombre, edad, email, password FROM Usuario WHERE email= '" + email + "'";
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(squery);
             if (res.next()) { 
-                int id= res.getInt("id");
+                int id = res.getInt("id");
                 String nombre = res.getString("nombre");
                 int edad = res.getInt("edad");
-                //String email = res.getString("email");
-                String password = res.getString("pass");
+                // String email = res.getString("email");
+                String password = res.getString("password");
                 usu = new Usuario(id, nombre, edad, email, password);
             }
             return usu;
@@ -122,13 +122,14 @@ public class DerbyDBUsuario implements IUsuarioDAO {
     @Override
     public boolean eliminar(String email) {
         try (Connection con = DriverManager.getConnection(
-                Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
-            String squery = "DELETE FROM usuarios WHERE email=?";
-            PreparedStatement pstmt = con.prepareStatement(squery);
-            pstmt.setString(1, email);
-            pstmt.executeUpdate();
+          Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
+            
+            String squery = "DELETE FROM usuario WHERE email=?";            
+            PreparedStatement stmt = con.prepareStatement(squery);
+            stmt.setString(1, email);
+            stmt.executeUpdate();
             return true;
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             return false;
         }
     }
@@ -136,17 +137,19 @@ public class DerbyDBUsuario implements IUsuarioDAO {
     @Override
     public boolean modificar(Usuario usuario) {
         try (Connection con = DriverManager.getConnection(
-                Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
-            String squery = "UPDATE usuarios SET nombre=?, edad=?, email=?, pass=? WHERE id=?";
-            PreparedStatement pstmt = con.prepareStatement(squery);
-            pstmt.setString(1, usuario.getNombre());
-            pstmt.setInt(2, usuario.getEdad());
-            pstmt.setString(3, usuario.getEmail());
-            pstmt.setString(4, usuario.getPassword());
-            pstmt.setInt(5, usuario.getId());
-            pstmt.executeUpdate();
+          Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
+            
+            String squery = "UPDATE usuario SET nombre=?, edad=?, email=?, password=? WHERE id=?";       
+            PreparedStatement stmt = con.prepareStatement(squery);
+            stmt.setString(1, usuario.getNombre());
+            stmt.setInt(2, usuario.getEdad());
+            stmt.setString(3, usuario.getEmail());
+            stmt.setString(4, usuario.getPassword());
+            stmt.setInt(5, usuario.getId());
+            
+            stmt.executeUpdate();
             return true;
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             return false;
         }
     }
