@@ -7,6 +7,7 @@ package modelo.persistencia;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,7 +39,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
         try (Connection con = DriverManager.getConnection(
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
-            String squery  = "INSERT INTO usuario (Nombre, Edad, email, password) VALUES(" 
+            String squery  = "INSERT INTO usuario (Nombre, Edad, email, pass) VALUES(" 
                         + "'" + persona.getNombre() + "', "
                         + persona.getEdad() + ", '" + persona.getEmail() + "', '" + persona.getPassword() + "')";
             Statement stmt = con.createStatement();
@@ -55,7 +56,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
             ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-            String squery = "SELECT id, nombre, edad, email, password FROM Usuario";
+            String squery = "SELECT id, nombre, edad, email, pass FROM Usuario";
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(squery);
             while (res.next()) { 
@@ -63,7 +64,7 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 String nombre = res.getString("nombre");
                 int edad = res.getInt("edad");
                 String email = res.getString("email");
-                String password = res.getString("password");
+                String password = res.getString("pass");
                 Usuario usu = new Usuario(id, nombre, edad, email, password);
                 listaUsuarios.add(usu);
             }
@@ -79,14 +80,37 @@ public class DerbyDBUsuario implements IUsuarioDAO {
                 Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
             
             Usuario usu = null;
-            String squery = "SELECT nombre, edad, email, password FROM Usuario WHERE Id=" + id;
+            String squery = "SELECT nombre, edad, email, pass FROM Usuario WHERE Id=" + id;
             Statement stmt = con.createStatement();
             ResultSet res = stmt.executeQuery(squery);
             if (res.next()) { 
                 String nombre = res.getString("nombre");
                 int edad = res.getInt("edad");
                 String email = res.getString("email");
-                String password = res.getString("password");
+                String password = res.getString("pass");
+                usu = new Usuario(id, nombre, edad, email, password);
+            }
+            return usu;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+   @Override
+    public Usuario obtenerUno(String email) {
+        try (Connection con = DriverManager.getConnection(
+                Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
+            
+            Usuario usu = null;
+            String squery = "SELECT id, nombre, edad, email, pass FROM Usuarios WHERE email='"+email+"'";
+            Statement stmt = con.createStatement();
+            ResultSet res = stmt.executeQuery(squery);
+            if (res.next()) { 
+                int id= res.getInt("id");
+                String nombre = res.getString("nombre");
+                int edad = res.getInt("edad");
+                //String email = res.getString("email");
+                String password = res.getString("pass");
                 usu = new Usuario(id, nombre, edad, email, password);
             }
             return usu;
@@ -96,18 +120,35 @@ public class DerbyDBUsuario implements IUsuarioDAO {
     }
 
     @Override
-    public Usuario obtenerUno(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean eliminar(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection con = DriverManager.getConnection(
+                Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
+            String squery = "DELETE FROM usuarios WHERE email=?";
+            PreparedStatement pstmt = con.prepareStatement(squery);
+            pstmt.setString(1, email);
+            pstmt.executeUpdate();
+            return true;
+        }catch(SQLException ex){
+            return false;
+        }
     }
 
     @Override
     public boolean modificar(Usuario usuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection con = DriverManager.getConnection(
+                Constantes.CONEX_DERBY_DB,Constantes.USUARIO_DERBY_DB,Constantes.PASSWD_DERBY_DB )) {
+            String squery = "UPDATE usuarios SET nombre=?, edad=?, email=?, pass=? WHERE id=?";
+            PreparedStatement pstmt = con.prepareStatement(squery);
+            pstmt.setString(1, usuario.getNombre());
+            pstmt.setInt(2, usuario.getEdad());
+            pstmt.setString(3, usuario.getEmail());
+            pstmt.setString(4, usuario.getPassword());
+            pstmt.setInt(5, usuario.getId());
+            pstmt.executeUpdate();
+            return true;
+        }catch(SQLException ex){
+            return false;
+        }
     }
 
 }
