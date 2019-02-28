@@ -3,11 +3,11 @@
     Created on : 21-feb-2019, 20:43:31
     Author     : IEUser
 --%>
-<%@page import='modelo.Usuario'%>
-<%@page import='modelo.logica.ServicioUsuarios'%>
-<%@page import='java.util.ArrayList'%>
+<%@page import="modelo.Usuario" %>
+<%@page import="modelo.logica.ServicioUsuarios" %>
+<%@page import="java.util.ArrayList" %>
 
-<% 
+<%
     Usuario usuario = (Usuario) session.getAttribute("usuario");
     String error = (String) session.getAttribute("mensajeError");
 %>
@@ -21,12 +21,12 @@
             <input id="email" name="email" type="hidden" value="LOGOUT"/>
             <input TYPE="submit" value="Salir"/>
         </form>
-        <% } else { %>
+    <% } else { %>
         <a href="login.jsp">Login</a>
         <a href="registrarse.jsp">Registrarse</a>
-        <% } %>
+    <% } %>
  </nav>
- <% if (error != null && !error.isEmpty()) { %>
- <h3 style="color: red"><%= error %></h3>
- <% session.removeAttribute("mensajeError");
- } %>
+<% if (error != null && !error.isEmpty()) { %>
+    <h3 style="color: red"> <%= error %> </h3>
+    <% session.removeAttribute("mensajeError");
+} %>
